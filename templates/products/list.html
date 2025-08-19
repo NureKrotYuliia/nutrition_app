@@ -1,69 +1,26 @@
-<!doctype html>
-<html lang="uk">
-<head>
-  <meta charset="utf-8">
-  <title>Каталог продуктів</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body{font-family:system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin:0; padding:24px;}
-    header, main{max-width:980px; margin:auto;}
-    nav a{margin-right:16px; text-decoration:none}
-    .search{margin:16px 0; display:flex; gap:8px}
-    input{padding:10px; flex:1}
-    button{padding:10px 16px}
-    .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:16px}
-    .card{border:1px solid #ddd; border-radius:12px; padding:16px}
-    .muted{color:#666; font-size:14px}
-    .pagination a, .pagination span{margin-right:8px; text-decoration:none}
-  </style>
-</head>
-<body>
-<header>
-  <h1>Каталог продуктів</h1>
-  <nav>
-    <a href="/">Головна</a>
-    <a href="/products/">Каталог продуктів</a>
-    <a href="/recipes/">Каталог рецептів</a>
-    <a href="/users/profile/">Мій кабінет</a>
-  </nav>
-</header>
-
-<main>
-  <form class="search" method="get" action="">
-    <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Пошук за назвою">
-    <button type="submit">Пошук</button>
-  </form>
-
-  {% if products %}
-    <div class="grid">
-      {% for p in products %}
-        <div class="card">
-          <h3><a href="{% url 'products:detail' p.pk %}">{{ p.name }}</a></h3>
-          <p class="muted">На 100 г:</p>
-          <p>Ккал: <b>{{ p.calories_kcal }}</b></p>
-          <p>Білки: <b>{{ p.protein_g }}</b> г</p>
-          <p>Жири: <b>{{ p.fat_g }}</b> г</p>
-          <p>Вуглеводи: <b>{{ p.carbs_g }}</b> г</p>
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Каталог продуктів</h2>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4">
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">
+                        Калорії: {{ product.calories_kcal }} <br>
+                        Білки: {{ product.protein_g }} г <br>
+                        Жири: {{ product.fat_g }} г <br>
+                        Вуглеводи: {{ product.carbs_g }} г
+                    </p>
+                    <a href="{% url 'products:detail' product.id %}" class="btn btn-primary">Детальніше</a>
+                </div>
+            </div>
         </div>
-      {% endfor %}
+        {% empty %}
+        <p>Поки що немає продуктів.</p>
+        {% endfor %}
     </div>
-
-    {% if is_paginated %}
-      <div class="pagination" style="margin-top:16px;">
-        {% if page_obj.has_previous %}
-          <a href="?q={{ request.GET.q }}&page=1">« Перша</a>
-          <a href="?q={{ request.GET.q }}&page={{ page_obj.previous_page_number }}">‹ Попередня</a>
-        {% endif %}
-        <span>Сторінка {{ page_obj.number }} з {{ page_obj.paginator.num_pages }}</span>
-        {% if page_obj.has_next %}
-          <a href="?q={{ request.GET.q }}&page={{ page_obj.next_page_number }}">Наступна ›</a>
-          <a href="?q={{ request.GET.q }}&page={{ page_obj.paginator.num_pages }}">Остання »</a>
-        {% endif %}
-      </div>
-    {% endif %}
-  {% else %}
-    <p>Нічого не знайдено.</p>
-  {% endif %}
-</main>
-</body>
-</html>
+</div>
+{% endblock %}

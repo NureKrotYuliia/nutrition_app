@@ -1,47 +1,11 @@
-<!doctype html>
-<html lang="uk">
-<head>
-  <meta charset="utf-8">
-  <title>Nutrition App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body{font-family:system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin:0; padding:24px;}
-    header, main{max-width:980px; margin:auto;}
-    nav a{margin-right:16px; text-decoration:none}
-    .search{margin:24px 0; display:flex; gap:8px}
-    input{padding:10px; flex:1}
-    button{padding:10px 16px}
-    .grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
-    .card{border:1px solid #ddd; border-radius:12px; padding:16px}
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Пошук продуктів і рецептів</h1>
-    <nav>
-      <a href="/">Головна</a>
-      <a href="/products/">Каталог продуктів</a>
-      <a href="/recipes/">Каталог рецептів</a>
-      <a href="/users/profile/">Мій кабінет</a>
-      <a href="/admin/">Admin</a>
-    </nav>
-  </header>
-  <main>
-    <form class="search">
-      <input placeholder="Назва, калорії, білки/жири/вуглеводи">
-      <button type="button">Пошук</button>
-    </form>
+{% extends "base.html" %}
 
-    <div class="grid">
-      <div class="card">
-        <h3>Каталог продуктів</h3>
-        <p>Перегляд калорій та БЖУ.</p>
-      </div>
-      <div class="card">
-        <h3>Каталог рецептів</h3>
-        <p>Фото, опис, рейтинг, харчова цінність.</p>
-      </div>
-    </div>
-  </main>
-</body>
-</html>
+{% block title %}Головна{% endblock %}
+
+{% block content %}
+  <div class="text-center py-5">
+    <h1>Ласкаво просимо в Nutrition App</h1>
+    <p class="lead">Шукайте продукти, складайте рецепти та контролюйте свій раціон!</p>
+    <a href="{% url 'products:list' %}" class="btn btn-primary btn-lg">Каталог продуктів</a>
+  </div>
+{% endblock %}

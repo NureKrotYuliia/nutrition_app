@@ -1,72 +1,63 @@
-<!doctype html>
-<html lang="uk">
-<head>
-  <meta charset="utf-8">
-  <title>{{ product.name }}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body{font-family:system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin:0; padding:24px;}
-    header, main{max-width:820px; margin:auto;}
-    nav a{margin-right:16px; text-decoration:none}
-    .card{border:1px solid #ddd; border-radius:12px; padding:16px}
-    .row{display:flex; gap:24px; flex-wrap:wrap}
-    .muted{color:#666}
-    input{padding:8px; width:120px}
-  </style>
-</head>
-<body>
-<header>
-  <h1>{{ product.name }}</h1>
-  <nav>
-    <a href="/">Головна</a>
-    <a href="/products/">Каталог продуктів</a>
-  </nav>
-</header>
+{% extends "base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+  <h2 class="mb-3">{{ product.name }}</h2>
 
-<main class="row">
-  <section class="card" style="flex:1 1 320px;">
-    <h3>Харчова цінність (на 100 г)</h3>
-    <p>Ккал: <b>{{ product.calories_kcal }}</b></p>
-    <p>Білки: <b>{{ product.protein_g }}</b> г</p>
-    <p>Жири: <b>{{ product.fat_g }}</b> г</p>
-    <p>Вуглеводи: <b>{{ product.carbs_g }}</b> г</p>
-    {% if product.created_by %}<p class="muted">Додав: {{ product.created_by.username }}</p>{% endif %}
-  </section>
-
-  <section class="card" style="flex:1 1 320px;">
-    <h3>Калькулятор на порцію</h3>
-    <p class="muted">Введіть вагу порції (г):</p>
-    <input id="grams" type="number" min="1" value="150">
-    <div id="calc" style="margin-top:12px;">
-      <p>Ккал: <b id="kcal"></b></p>
-      <p>Білки: <b id="p"></b> г</p>
-      <p>Жири: <b id="f"></b> г</p>
-      <p>Вуглеводи: <b id="c"></b> г</p>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5>Харчова цінність (на 100 г)</h5>
+          <ul class="list-unstyled mb-0">
+            <li>Ккал: <b>{{ product.calories_kcal }}</b></li>
+            <li>Білки: <b>{{ product.protein_g }}</b> г</li>
+            <li>Жири: <b>{{ product.fat_g }}</b> г</li>
+            <li>Вуглеводи: <b>{{ product.carbs_g }}</b> г</li>
+          </ul>
+          {% if product.created_by %}
+            <div class="text-muted small mt-2">Додав: {{ product.created_by.username }}</div>
+          {% endif %}
+        </div>
+      </div>
     </div>
-  </section>
-</main>
 
-<script>
-const data = {
-  kcal: parseFloat("{{ product.calories_kcal }}"),
-  p:    parseFloat("{{ product.protein_g }}"),
-  f:    parseFloat("{{ product.fat_g }}"),
-  c:    parseFloat("{{ product.carbs_g }}"),
-};
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5>Калькулятор на порцію</h5>
+          <label class="form-label small text-muted">Введіть вагу порції (г):</label>
+          <input id="grams" type="number" min="1" value="150" class="form-control" />
 
-function recalc(){
-  const g = Math.max(0, parseFloat(document.getElementById('grams').value || 0));
-  const k = (data.kcal * g / 100).toFixed(2);
-  const p = (data.p    * g / 100).toFixed(2);
-  const f = (data.f    * g / 100).toFixed(2);
-  const c = (data.c    * g / 100).toFixed(2);
-  document.getElementById('kcal').textContent = k;
-  document.getElementById('p').textContent    = p;
-  document.getElementById('f').textContent    = f;
-  document.getElementById('c').textContent    = c;
-}
-document.getElementById('grams').addEventListener('input', recalc);
-recalc();
-</script>
-</body>
-</html>
+          <div class="mt-3">
+            <div>Ккал: <b id="kcal"></b></div>
+            <div>Білки: <b id="p"></b> г</div>
+            <div>Жири: <b id="f"></b> г</div>
+            <div>Вуглеводи: <b id="c"></b> г</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      kcal: parseFloat("{{ product.calories_kcal }}"),
+      p:    parseFloat("{{ product.protein_g }}"),
+      f:    parseFloat("{{ product.fat_g }}"),
+      c:    parseFloat("{{ product.carbs_g }}"),
+    };
+    function recalc(){
+      const g = Math.max(0, parseFloat(document.getElementById('grams').value || 0));
+      const k = (data.kcal * g / 100).toFixed(2);
+      const p = (data.p    * g / 100).toFixed(2);
+      const f = (data.f    * g / 100).toFixed(2);
+      const c = (data.c    * g / 100).toFixed(2);
+      document.getElementById('kcal').textContent = k;
+      document.getElementById('p').textContent    = p;
+      document.getElementById('f').textContent    = f;
+      document.getElementById('c').textContent    = c;
+    }
+    document.getElementById('grams').addEventListener('input', recalc);
+    recalc();
+  </script>
+{% endblock %}
