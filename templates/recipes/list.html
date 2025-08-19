@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Каталог рецептів</h2>
+    <div class="row">
+        {% for recipe in recipes %}
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.name }}</h5>
+                        <p class="card-text">
+                            Калорійність: {{ recipe.calories_kcal }} ккал <br>
+                            Автор: {{ recipe.author.username }}
+                        </p>
+                        <a href="{% url 'recipes:detail' recipe.id %}" class="btn btn-primary">Детальніше</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Поки що немає рецептів.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

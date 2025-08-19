@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ recipe.name }}</h2>
+    <p><strong>Автор:</strong> {{ recipe.author.username }}</p>
+    <p><strong>Калорійність:</strong> {{ recipe.calories_kcal }} ккал</p>
+    <p><strong>Опис:</strong> {{ recipe.description }}</p>
+
+    <h4>Інгредієнти:</h4>
+    <ul>
+        {% for product in recipe.products.all %}
+            <li>{{ product.name }} ({{ product.calories_kcal }} ккал)</li>
+        {% empty %}
+            <li>Немає інгредієнтів</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Інгредієнти:</h3>
+    <ul>
+        {% for ing in recipe.ingredients.all %}
+            <li>
+                {{ ing.product.name }} — {{ ing.amount_g }} г
+                {% if ing.note %} ({{ ing.note }}) {% endif %}
+            </li>
+        {% empty %}
+            <li>Немає інгредієнтів</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
