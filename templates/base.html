@@ -15,15 +15,23 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Головна</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'products:list' %}">Продукти</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:list' %}">Рецепти</a></li>
-
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Головна</a>
+                </li>
                 {% if user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link" href="#">Мій кабінет</a></li>
-                    <li class="nav-item"><a class="nav-link text-danger" href="{% url 'users:logout' %}">Вийти</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'users:profile' %}">Мій кабінет</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{% url 'users:logout' %}">Вийти</a>
+                    </li>
                 {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'users:login' %}">Увійти</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'users:login' %}">Увійти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'users:register' %}">Реєстрація</a>
+                    </li>
                 {% endif %}
             </ul>
         </div>
